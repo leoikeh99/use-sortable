@@ -1,5 +1,5 @@
 {
-  "name": "use-sortable",
+  "name": "@wazza99/use-sortable",
   "version": "0.1.0",
   "license": "MIT",
   "author": "Leonard Ikeh",
@@ -48,5 +48,22 @@
       "path": "dist/use-sortable.esm.js",
       "limit": "10 KB"
     }
-  ]
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.1.4",
+    "@tsconfig/recommended": "^1.0.7",
+    "@tsconfig/vite-react": "^3.0.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "dts-cli": "^2.0.5",
+    "husky": "^9.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "size-limit": "^11.1.4",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "nanoid": "^5.0.7"
+  }
 }

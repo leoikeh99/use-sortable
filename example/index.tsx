@@ -1,14 +1,19 @@
 import 'react-app-polyfill/ie11';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Thing } from '../.';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import Board from './components/Board';
 
 const App = () => {
   return (
     <div>
-      <Thing />
+      <Board />
     </div>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
