@@ -25,12 +25,12 @@ export const useSortable = <K extends string, T extends Column<K>>(
     const { destination, source, draggableId } = result;
     const columnsDroppableId = options?.columnsDroppableId || 'all-columns';
 
-    //if no destination return
+    //if no destination, return
     if (!destination) {
       return;
     }
 
-    //if destination is the same as source return
+    //if destination is the same as source, return
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -69,7 +69,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
           const newColumns = moveColumns(columnsRef.current, result);
           columnsRef.current = newColumns;
 
-          //update optimistic columns if it's the last async operation made
+          //update optimistic columns if no other operation is ahead
           if (isFinalOperation(asyncOperationsRef.current, operationId))
             setOptimisticColumns(newColumns);
           asyncOperationsRef.current = asyncOperationsRef.current.filter(
@@ -197,7 +197,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
       i.order >= itemOrder ? { ...i, order: i.order + 1 } : i
     );
 
-    newColumnTasks.push({ ...item, order: itemOrder });
+    newColumnTasks.splice(itemOrder - 1, 0, { ...item, order: itemOrder });
 
     const newColumns = columnsRef.current.map((c) =>
       c.id === columnId ? { ...c, [key]: newColumnTasks } : c
@@ -292,7 +292,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
         ? { ...c, order: c.order + 1 }
         : c
     );
-    newColumns.push(newColumn);
+    newColumns.splice(columnOrder - 1, 0, newColumn);
 
     setOptimisticColumns(newColumns as T[]);
     columnsRef.current = newColumns as T[];

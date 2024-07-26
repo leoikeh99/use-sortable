@@ -2,7 +2,7 @@ import { data } from '../data';
 import Column from './Column';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { useSortable } from '../../src';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddColumnItemForm from './forms/AddColumnItemForm';
 import RemoveColumnItemForm from './forms/RemoveColumnItemForm';
 

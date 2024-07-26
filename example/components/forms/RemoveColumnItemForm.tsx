@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { MyColumn } from "../../types";
+import { useState } from 'react';
+import { MyColumn } from '../../types';
 
 type Props = {
   columns: MyColumn[];
@@ -56,7 +56,7 @@ const RemoveColumnItemForm = ({ columns, removeColumnItem }: Props) => {
         >
           Remove
         </button>
-      </form>{" "}
+      </form>{' '}
     </div>
   );
 };

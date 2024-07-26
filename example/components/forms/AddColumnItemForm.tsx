@@ -1,8 +1,12 @@
-import { MyColumn, AddTaskItem } from "../../types";
+import { MakeOptional } from '../../../src/types';
+import { MyColumn, MyTask } from '../../types';
 
 type Props = {
   columns: MyColumn[];
-  addColumnItem: (columnId: string, item: AddTaskItem) => void;
+  addColumnItem: (
+    columnId: string,
+    item: MakeOptional<MyTask, 'order'>
+  ) => void;
 };
 
 const AddColumnItemForm = ({ columns, addColumnItem }: Props) => {
@@ -12,7 +16,7 @@ const AddColumnItemForm = ({ columns, addColumnItem }: Props) => {
       <br />
       <form
         action=""
-        className="flex gap-1 flex-col max-w-md"
+        className="flex gap-3 flex-col max-w-md"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -22,6 +26,7 @@ const AddColumnItemForm = ({ columns, addColumnItem }: Props) => {
           addColumnItem(columnId, {
             id: Date.now().toString(),
             title: taskName,
+            order: 2,
           });
         }}
       >

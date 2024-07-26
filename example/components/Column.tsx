@@ -1,6 +1,5 @@
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import Task from './Task';
-import { useMemo } from 'react';
 import { MyColumn } from '../types';
 import { cn } from '../utils';
 
