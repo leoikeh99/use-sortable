@@ -9,6 +9,9 @@ jobs:
       matrix:
         node: ['14.x', '16.x']
         os: [ubuntu-latest, windows-latest, macOS-latest]
+        exclude:
+          - os: macOS-latest
+            node: '14.x'
 
     steps:
       - name: Checkout repo
