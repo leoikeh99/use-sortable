@@ -20,24 +20,18 @@ const EditTaskForm = ({
   const [columnId, setColumnId] = useState('');
   const [taskId, setTaskId] = useState('');
 
-  const onColumnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setColumnId(e.target.value);
-    setTitle(
-      columns.find((column) => column.id === e.target.value)?.tasks[0].title!
-    );
-  };
-
   const onTaskChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTaskId(e.target.value);
     setTitle(
       columns
         .find((column) => column.id === columnId)
-        ?.tasks.find((task) => task.id === e.target.value)?.title!
+        ?.tasks.find((task) => task.id === e.target.value)?.title || ''
     );
   };
 
   const removeTask = () => {
     removeColumnItem(taskId);
+    setTaskId('');
     setTitle('');
   };
 
@@ -60,7 +54,7 @@ const EditTaskForm = ({
             name="columnId"
             className="input"
             value={columnId}
-            onChange={onColumnChange}
+            onChange={(e) => setColumnId(e.target.value)}
           >
             <option value="">Select column</option>
             {columns.map((column) => (
