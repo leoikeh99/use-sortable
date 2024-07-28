@@ -3,8 +3,10 @@ import Column from './Column';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { useSortable } from '../../src';
 import { useEffect, useState } from 'react';
-import AddColumnItemForm from './forms/AddColumnItemForm';
-import RemoveColumnItemForm from './forms/RemoveColumnItemForm';
+import AddTaskForm from './forms/tasks/AddTaskForm';
+import Header from './Header';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import EditTaskForm from './forms/tasks/EditTaskForm';
 
 const Board = () => {
   const { columns, dragEndHandler, fns } = useSortable(data.columns, 'tasks');
@@ -45,7 +47,8 @@ const Board = () => {
   useEffect(() => {}, []);
 
   return (
-    <div className="mt-20">
+    <main>
+      <Header />
       <DragDropContext onDragEnd={handleDrag}>
         <Droppable
           droppableId="all-columns"
@@ -54,7 +57,7 @@ const Board = () => {
         >
           {(provided) => (
             <div
-              className="grid grid-cols-4 gap-1 border border-black p-2"
+              className={`flex gap-2 px-4 my-6 w-full overflow-x-auto`}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
@@ -66,38 +69,28 @@ const Board = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <button
-        className="p-2 bg-blue-500 text-white rounded-md"
-        onClick={() =>
-          fns.createColumn({
-            id: Date.now().toString(),
-            name: 'New Column',
-            order: 5,
-            tasks: [
-              { id: (Date.now() + 1).toString(), title: 'New Task', order: 1 },
-            ],
-          })
-        }
-      >
-        Create Column
-      </button>
-      <button
-        className="p-2 bg-red-500 text-white rounded-md"
-        onClick={() => fns.removeColumn('column3')}
-      >
-        Remove Column
-      </button>
-      <div className="p-2 grid grid-cols-2 gap-2">
-        <AddColumnItemForm
-          columns={data.columns}
-          addColumnItem={fns.createColumnItem}
-        />
-        <RemoveColumnItemForm
-          columns={data.columns}
-          removeColumnItem={fns.removeColumnItem}
-        />
-      </div>
-    </div>
+
+      <Tabs defaultValue="tasks" className="container mx-auto mb-5">
+        <TabsList className="grid max-w-[30rem] grid-cols-2 mx-auto ">
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsTrigger value="columns">Columns</TabsTrigger>
+        </TabsList>
+        <TabsContent value="columns"></TabsContent>
+        <TabsContent value="tasks">
+          <div className="sm:p-2 grid sm:grid-cols-[repeat(auto-fit,_minmax(20rem,1fr))] gap-4">
+            <AddTaskForm
+              columns={columns}
+              addColumnItem={fns.createColumnItem}
+            />
+            <EditTaskForm
+              columns={columns}
+              updateColumnItem={fns.updateColumnItem}
+              removeColumnItem={fns.removeColumnItem}
+            />
+          </div>
+        </TabsContent>
+      </Tabs>
+    </main>
   );
 };
 
