@@ -5,11 +5,7 @@ import './index.css';
 import Board from './components/Board';
 
 const App = () => {
-  return (
-    <div>
-      <Board />
-    </div>
-  );
+  return <Board />;
 };
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
