@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { MyColumn, MyTask } from '@/types';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 type Props = {
   columns: MyColumn[];
@@ -19,6 +19,11 @@ const EditTaskForm = ({
   const [title, setTitle] = useState('');
   const [columnId, setColumnId] = useState('');
   const [taskId, setTaskId] = useState('');
+
+  const columnAvailable = useMemo(
+    () => columns.some((column) => column.id === columnId),
+    [columns, columnId]
+  );
 
   const onTaskChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTaskId(e.target.value);
@@ -44,7 +49,7 @@ const EditTaskForm = ({
         onSubmit={(e) => {
           e.preventDefault();
           updateColumnItem(taskId, {
-            title: title,
+            title,
           });
         }}
       >
@@ -96,14 +101,17 @@ const EditTaskForm = ({
             required
           />
         </div>
-        <Button type="submit" disabled={!taskId}>
+        <Button
+          type="submit"
+          disabled={!columnAvailable || !taskId || title.trim() === ''}
+        >
           Update
         </Button>
         <Button
           type="button"
           variant="destructive"
           onClick={removeTask}
-          disabled={!taskId}
+          disabled={!columnAvailable && !taskId}
         >
           Remove
         </Button>

@@ -23,17 +23,25 @@ const AddTaskForm = ({ columns, addColumnItem }: Props) => {
 
     const title = (e.target as any).title.value as string;
     const columnId = (e.target as any).columnId.value as string;
-    const order = (e.target as any).order.value as number;
+
+    const _maxOrder = maxOrder(columnId);
+
+    const order = ((e.target as any).order.value as number) || _maxOrder;
 
     if (order > maxOrder(columnId)) {
       alert('Order can not be greater than ' + maxOrder(columnId));
       return;
     }
 
+    if (order <= 0) {
+      alert('Order must be greater than 0');
+      return;
+    }
+
     addColumnItem(columnId, {
       id: Date.now().toString(),
       title,
-      order,
+      order, //order is optional
     });
   };
   return (
@@ -61,13 +69,13 @@ const AddTaskForm = ({ columns, addColumnItem }: Props) => {
           />
         </div>
         <div>
-          <label htmlFor="order">Enter order:</label>
+          <label htmlFor="order">Enter order (optional):</label>
           <input
             type="number"
             name="order"
             className="input"
             placeholder="Enter order"
-            required
+            min={1}
           />
         </div>
         <Button type="submit" className="bg-emerald-500">

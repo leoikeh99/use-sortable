@@ -1,50 +1,39 @@
 import { data } from '../data';
-import Column from './Column';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { useSortable } from '../../src';
-import { useEffect, useState } from 'react';
-import AddTaskForm from './forms/tasks/AddTaskForm';
-import Header from './Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { createPromise } from '@/lib/utils';
+import { OptimisticColumnData, OptimisticItemData } from '../../src/types';
+import Column from './Column';
+import Header from './Header';
+import AddTaskForm from './forms/tasks/AddTaskForm';
 import EditTaskForm from './forms/tasks/EditTaskForm';
+import AddColumnForm from './forms/columns/AddColumnForm';
+import EditColumnForm from './forms/columns/EditColumnForm';
 
 const Board = () => {
   const { columns, dragEndHandler, fns } = useSortable(data.columns, 'tasks');
-  const [error] = useState(false);
+
+  async function updateTask(values: OptimisticItemData) {
+    //values contain the current and old state of the optimistic data
+    const data = await createPromise(values, 3000); //do something after promise is completed
+    console.log(data);
+  }
+
+  async function updateColumn(values: OptimisticColumnData) {
+    //values contain the current and old state of the optimistic data
+    const data = await createPromise(values, 3000); //do something after promise is completed
+    console.log(data);
+  }
 
   const handleDrag = (result: DropResult) => {
     //With optimistic updates
     dragEndHandler(
       result,
       { reorderColumns: true },
-      {
-        updateItem: async (values) => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              if (!error) {
-                return resolve(console.log(values));
-              } else {
-                return reject('Some Error');
-              }
-            }, 3000);
-          });
-        },
-        updateColumn: async (values) => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              if (!error) {
-                return resolve(console.log(values));
-              } else {
-                return reject('Some Error');
-              }
-            }, 3000);
-          });
-        },
-      }
+      { updateItem: updateTask, updateColumn }
     );
   };
-
-  useEffect(() => {}, []);
 
   return (
     <main>
@@ -75,7 +64,6 @@ const Board = () => {
           <TabsTrigger value="tasks">Tasks</TabsTrigger>
           <TabsTrigger value="columns">Columns</TabsTrigger>
         </TabsList>
-        <TabsContent value="columns"></TabsContent>
         <TabsContent value="tasks">
           <div className="sm:p-2 grid sm:grid-cols-[repeat(auto-fit,_minmax(20rem,1fr))] gap-4">
             <AddTaskForm
@@ -86,6 +74,16 @@ const Board = () => {
               columns={columns}
               updateColumnItem={fns.updateColumnItem}
               removeColumnItem={fns.removeColumnItem}
+            />
+          </div>
+        </TabsContent>
+        <TabsContent value="columns">
+          <div className="sm:p-2 grid sm:grid-cols-[repeat(auto-fit,_minmax(20rem,1fr))] gap-4">
+            <AddColumnForm columns={columns} addColumn={fns.createColumn} />
+            <EditColumnForm
+              columns={columns}
+              updateColumn={fns.updateColumn}
+              removeColumn={fns.removeColumn}
             />
           </div>
         </TabsContent>
