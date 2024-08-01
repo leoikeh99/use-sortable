@@ -2,6 +2,15 @@
 
 A react hook used in sorting and managing data in Drag n Drop layouts, it allows sorting and reordering of items within its column and also across multiple columns, it also allows the reordering of columns in the context. this hook also reorder based on the data type **order**, this allows the persistence of the DnD layout with the backend of your application. This hook can also be used with any react Drag n Drop library as long as the input type is consistent.
 
+## Features
+
+- Allows sorting and reordering of items within its column and also across multiple columns
+- Allows the reordering of columns in the context
+- Sorts based on the data type **order**, this allows the persistence of the DnD layout with the backend of your application
+- Can be used with any react Drag n Drop library as long as the input type is consistent
+- Uses update functions to persist data on your backend, while using optimistic updates.
+- Reverts optimistic updates in the event of an error.
+
 # Installation
 
 Using npm:
@@ -87,7 +96,7 @@ async function updateColumn(values: OptimisticColumnData) {
   const data = await createPromise(values, 3000);
 }
 
-const options = { reorderColumn: true, columnsDroppableId: 'all-columns' };
+const options = { reorderColumns: true, columnsDroppableId: 'all-columns' };
 const updates = { updateItem, updateColumn };
 
 const handleDrag = (result) => {
@@ -137,7 +146,7 @@ fns.removeColumn('column2');
 | `updateColumn`     | Updates a column.                           | `function` |
 | `removeColumn`     | Removes a column.                           | `function` |
 
-## Important information
+## Important Notes
 
 - All `columns` and `items` must have a unique `Id` and and initial `order`.
 - If using a DnD react library, it is important that the draggable `id` of every item is the same as its `item id`, this also applies in the case of `columns`.
