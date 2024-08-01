@@ -86,9 +86,9 @@ const  handleDrag = (result) => {
 };
 ```
 
-### The result type
+### The result parameter
 
-The result type is `DropInfo` which contains the `destination` and `source` information of the dropped item, it also contains the `draggableId` of the dropped item. The result parameter will look like this:
+The result parameter is of type `DropInfo` which contains the `destination` and `source` information of the dropped item, it also contains the `draggableId` of the dropped item. The result parameter will look something like this:
 
 ```typescript
 const result = {
@@ -98,7 +98,7 @@ const result = {
 };
 ```
 
-Its important that no matter the react DnD library you use, the result data you pass in should always look like this.
+Its important that no matter the DnD library you use, the result data you pass in after a drag drop operation should always look like this.
 
 ### With optimistic updates
 
@@ -167,3 +167,14 @@ fns.removeColumn('column2');
 - All `columns` and `items` must have a unique `Id` and and initial `order`.
 - If using a DnD react library, it is important that the draggable `id` of every item is the same as its `item id`, this also applies in the case of `columns`.
 - Any sort of data could be passed into `columns` or `items`, but it is required they each have an `order` and a unique `id`, it is also required that each `column` have an array of i`tems`.
+
+## Contributing
+
+Contributions are welcome in this project, follow the steps below to get started.
+
+1. Fork the project
+2. Create a new branch for your feature or bug fix
+3. Commit your changes and push to your forked repo
+4. Submit a pull request
+
+Please note that before writing any code, it's a good idea to discuss the change you wish to make via an issue or a pull request. This will help prevent wasted time and ensure that your changes are in line with the project's goals.
