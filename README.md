@@ -1,160 +1,138 @@
-# DTS React User Guide
+# Use Sortable
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with DTS. Let’s get you oriented with what’s here and how to use it.
+A react hook used in sorting and managing data in Drag n Drop layouts, it allows sorting and reordering of items within its column and also across multiple columns, it also allows the reordering of columns in the context. this hook also reorder based on the data type **order**, this allows the persistence of the DnD layout with the backend of your application. This hook can also be used with any react Drag n Drop library as long as the input type is consistent.
 
-> This DTS setup is meant for developing React component libraries (not apps!) that can be published to NPM. If you’re looking to build a React-based app, you should use `create-react-app`, `razzle`, `nextjs`, `gatsby`, or `react-static`.
+# Installation
 
-> If you’re new to TypeScript and React, checkout [this handy cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet/)
+Using npm:
 
-## Commands
-
-DTS scaffolds your new library inside `/src`, and also sets up a [Vite-based](https://vitejs.dev) playground for it inside `/example`.
-
-The recommended workflow is to run DTS in one terminal:
-
-```bash
-npm start # or yarn start
+```
+$ npm install @wazza99/use-sortable
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+## Data Structure
 
-Then run the example inside another:
+Using a data structure where we can have multiple columns and each columns could contain multiple items.
 
-```bash
-cd example
-npm i # or yarn to install dependencies
-npm start # or yarn start
+```mermaid
+graph TB
+C[Columns] --> C1
+C[Columns] --> C2
+C1[Column 1]  --> I1[Item 1]
+C1[Column 1]  --> I2[Item 2]
+C1[Column 1]  --> I3[Item 3]
+C2[Column 2]  --> I4[Item 4]
+C2[Column 2]  --> I5[Item 5]
+C2[Column 2]  --> I6[Item 6]
 ```
 
-The default example imports and live reloads whatever is in `/dist`, so if you are seeing an out of date component, make sure DTS is running in watch mode like we recommend above. 
+## Usage
 
-To do a one-off build, use `npm run build` or `yarn build`.
+### Basic
 
-To run tests, use `npm test` or `yarn test`.
+```typescript
+//initial data
+const initialColumns= [
+	{
+	id:  'column1',
+	order:  1,
+	name:  'Todo',
+	tasks: [
+		{
+		id:'1',
+		title:'Task 1 title',
+		order:1,
+		},
+		{
+		id:'2',
+		title:'Task 2 title',
+		order:2,
+		}
+		],
+		},
+		{
+		id:  'column2',
+		order:  2,
+		name:  'In-Progress',
+		tasks:[
+			{ id:"3",
+			order:1
+			title:"Task 3 title" }
+		]
+		}
+	]
+const { columns, dragEndHandler, fns} = useSortable(initialColumns, 'tasks');
 
-## Configuration
+const options = { reorderColumn:true, columnsDroppableId:'all-columns' }
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle analysis
-
-Calculates the real cost of your library using [size-limit](https://github.com/ai/size-limit) with `npm run size` and visulize it with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/example
-  index.html
-  index.tsx       # test your component here in a demo app
-  package.json
-  tsconfig.json
-/src
-  index.tsx       # EDIT THIS
-/test
-  index.test.tsx  # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+const  handleDrag = (result) => {
+	dragEndHandler( result, options );
+};
 ```
 
-#### React Testing Library
+### With optimistic updates
 
-We do not set up `react-testing-library` for you yet, we welcome contributions and documentation on this.
-
-### Rollup
-
-DTS uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `dts` [optimizations docs](https://github.com/weiran-zsd/dts-cli#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+```typescript
+async function updateItem(values: OptimisticItemData) {
+  //values contains the previous and current optimistc info of the dropped item, you can use this to update your backend
+  const data = await createPromise(values, 3000);
 }
+
+async function updateColumn(values: OptimisticColumnData) {
+  const data = await createPromise(values, 3000);
+}
+
+const options = { reorderColumn: true, columnsDroppableId: 'all-columns' };
+const updates = { updateItem, updateColumn };
+
+const handleDrag = (result) => {
+  dragEndHandler(result, options, updates);
+};
 ```
 
-You can also choose to install and use [invariant](https://github.com/weiran-zsd/dts-cli#invariant) and [warning](https://github.com/weiran-zsd/dts-cli#warning) functions.
+### Helper functions
 
-## Module Formats
+```typescript
+const { columns, dragEndHandler, fns } = useSortable(initialColumns, 'tasks');
 
-CJS, ESModules, and UMD module formats are supported.
-
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
-
-## Deploying the Example Playground
-
-The Playground is just a simple [Vite](https://vitejs.dev) app, you can deploy it anywhere you would normally deploy that. Here are some guidelines for **manually** deploying with the Netlify CLI (`npm i -g netlify-cli`):
-
-```bash
-cd example # if not already in the example folder
-npm run build # builds to dist
-netlify deploy # deploy the dist folder
+// Example usage of the functions
+fns.createColumnItem('column1', { id: 'task7', title: 'Item 7' });
+fns.removeColumnItem('task1');
+fns.updateColumnItem('task1', { title: 'New title' });
+fns.createColumn({ id: 'column2', name: 'Doing', tasks: [] });
+fns.updateColumn('column2', { name: 'New name' });
+fns.removeColumn('column2');
 ```
 
-Alternatively, if you already have a git repo connected, you can set up continuous deployment with Netlify:
+## API
 
-```bash
-netlify init
-# build command: yarn build && cd example && yarn && yarn build
-# directory to deploy: example/dist
-# pick yes for netlify.toml
-```
+#### Parameters
 
-## Named Exports
+| Parameter        | Type     | Description                           |
+| ---------------- | -------- | ------------------------------------- |
+| `initialColumns` | `array`  | Initial set of columns.               |
+| `key`            | `string` | Key to identify the items in columns. |
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+### Returns
 
-## Including Styles
+| Property         | Type       | Description                                               |
+| ---------------- | ---------- | --------------------------------------------------------- |
+| `columns`        | `array`    | The current state of the columns with optimistic updates. |
+| `dragEndHandler` | `function` | Function to handle drag end events.                       |
+| `fns`            | `object`   | Object containing functions to manipulate columns .       |
 
-There are many ways to ship styles, including with CSS-in-JS. DTS has no opinion on this, configure how you like.
+### `fns` Object
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
+| Function           | Description                                 | Type       |
+| ------------------ | ------------------------------------------- | ---------- |
+| `createColumnItem` | Creates a new item in the specified columnn | `function` |
+| `removeColumnItem` | Removes an item from the columns.           | `function` |
+| `updateColumnItem` | Updates an item in the columns.             | `function` |
+| `createColumn`     | Creates a new column.                       | `function` |
+| `updateColumn`     | Updates a column.                           | `function` |
+| `removeColumn`     | Removes a column.                           | `function` |
 
-## Publishing to NPM
+## Important information
 
-We recommend using [np](https://github.com/sindresorhus/np).
-
-## Usage with Lerna
-
-When creating a new package with DTS within a project set up with Lerna, you might encounter a `Cannot resolve dependency` error when trying to run the `example` project. To fix that you will need to make changes to the `package.json` file _inside the `example` directory_.
-
-The problem is that due to the nature of how dependencies are installed in Lerna projects, the aliases in the example project's `package.json` might not point to the right place, as those dependencies might have been installed in the root of your Lerna project.
-
-Change the `alias` to point to where those packages are actually installed. This depends on the directory structure of your Lerna project, so the actual path might be different from the diff below.
-
-```diff
-   "alias": {
--    "react": "../node_modules/react",
--    "react-dom": "../node_modules/react-dom"
-+    "react": "../../../node_modules/react",
-+    "react-dom": "../../../node_modules/react-dom"
-   },
-```
-
-An alternative to fixing this problem would be to remove aliases altogether and define the dependencies referenced as aliases as dev dependencies instead. [However, that might cause other problems.](https://github.com/formium/tsdx/issues/64)
+- All `columns` and `items` must have a unique Id and and initial order.
+- If using a DnD react library, it is important that the draggable id of every item is the same as its `item id`, this also applies in the case of `columns`.
