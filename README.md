@@ -40,6 +40,8 @@ C2[Column 2]  --> I6[Item 6]
 ### Basic
 
 ```typescript
+import { useSortable } from 'use-sortable';
+
 //initial data
 const initialColumns= [
 	{
@@ -122,10 +124,10 @@ fns.removeColumn('column2');
 
 #### Parameters
 
-| Parameter        | Type     | Description                           |
-| ---------------- | -------- | ------------------------------------- |
-| `initialColumns` | `array`  | Initial set of columns.               |
-| `key`            | `string` | Key to identify the items in columns. |
+| Parameter        | Type     | Description                               |
+| ---------------- | -------- | ----------------------------------------- |
+| `initialColumns` | `array`  | Initial set of columns.                   |
+| `key`            | `string` | Key to identify the items key in columns. |
 
 ### Returns
 
