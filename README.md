@@ -168,6 +168,13 @@ fns.removeColumn('column2');
 - If using a DnD react library, it is important that the draggable `id` of every item is the same as its `item id`, this also applies in the case of `columns`.
 - Any sort of data could be passed into `columns` or `items`, but it is required they each have an `order` and a unique `id`, it is also required that each `column` have an array of i`tems`.
 
+### Live example
+
+This example uses [@hello-pangea/dnd](https://github.com/hello-pangea/dnd) as the DnD library.
+
+- [Live Site](https://use-sortable-example.netlify.app/)
+- [Code](https://github.com/leoikeh99/use-sortable/tree/main/example)
+
 ## Contributing
 
 Contributions are welcome in this project, follow the steps below to get started.
