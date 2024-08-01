@@ -37,30 +37,35 @@ const initialColumns= [
 	id:  'column1',
 	order:  1,
 	name:  'Todo',
+	//other data points...
 	tasks: [
 		{
-		id:'1',
-		title:'Task 1 title',
-		order:1,
+			id:'1',
+			title:'Task 1 title',
+			order:1,
+			//other data points...
 		},
 		{
-		id:'2',
-		title:'Task 2 title',
-		order:2,
+			id:'2',
+			title:'Task 2 title',
+			order:2,
 		}
-		],
+	],
 		},
+	{
+	id:  'column2',
+	order:  2,
+	name:  'In-Progress',
+	tasks:[
 		{
-		id:  'column2',
-		order:  2,
-		name:  'In-Progress',
-		tasks:[
-			{ id:"3",
+			id:"3",
 			order:1
-			title:"Task 3 title" }
-		]
+			title:"Task 3 title"
 		}
 	]
+	}
+	]
+
 const { columns, dragEndHandler, fns} = useSortable(initialColumns, 'tasks');
 
 const options = { reorderColumn:true, columnsDroppableId:'all-columns' }
