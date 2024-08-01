@@ -48,7 +48,6 @@ const initialColumns= [
 	id:  'column1',
 	order:  1,
 	name:  'Todo',
-	//other data points...
 	tasks: [
 		{
 			id:'task1',
@@ -62,6 +61,7 @@ const initialColumns= [
 			order:2,
 		}
 	],
+	//other data points...
  },
 	{
 	id:  'column2',
@@ -85,6 +85,20 @@ const  handleDrag = (result) => {
 	dragEndHandler( result, options );
 };
 ```
+
+### The result type
+
+The result type is `DropInfo` which contains the `destination` and `source` information of the dropped item, it also contains the `draggableId` of the dropped item. The result parameter will look like this:
+
+```typescript
+const result = {
+  destination: { droppableId: 'column1', index: 1 },
+  source: { droppableId: 'column1', index: 0 },
+  draggableId: 'task1',
+};
+```
+
+Its important that no matter the react DnD library you use, the result data you pass in should always look like this.
 
 ### With optimistic updates
 
@@ -131,11 +145,11 @@ fns.removeColumn('column2');
 
 ### Returns
 
-| Property         | Type       | Description                                               |
-| ---------------- | ---------- | --------------------------------------------------------- |
-| `columns`        | `array`    | The current state of the columns with optimistic updates. |
-| `dragEndHandler` | `function` | Function to handle drag end events.                       |
-| `fns`            | `object`   | Object containing functions to manipulate columns .       |
+| Property         | Type       | Description                                         |
+| ---------------- | ---------- | --------------------------------------------------- |
+| `columns`        | `array`    | The state of sorted columns and items.              |
+| `dragEndHandler` | `function` | Function to handle drag end events.                 |
+| `fns`            | `object`   | Object containing functions to manipulate columns . |
 
 ### `fns` Object
 
