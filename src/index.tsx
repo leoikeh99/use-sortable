@@ -189,6 +189,9 @@ export const useSortable = <K extends string, T extends Column<K>>(
     const column = columnsRef.current.find((c) => c.id === columnId);
     if (!column) throw new Error('Column not found');
 
+    const checkItem = column[key].find((i) => i.id === item.id);
+    if (checkItem) throw new Error('Item already exists');
+
     let itemOrder = item.order || column[key].length + 1;
     if (itemOrder < 1 || itemOrder > column[key].length + 1)
       itemOrder = column[key].length + 1;
