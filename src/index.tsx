@@ -326,3 +326,5 @@ export const useSortable = <K extends string, T extends Column<K>>(
     },
   };
 };
+
+export type * from './types';
