@@ -40,7 +40,7 @@ C2[Column 2]  --> I6[Item 6]
 ### Basic
 
 ```typescript
-import { useSortable } from 'use-sortable';
+import { useSortable } from '@wazza99/use-sortable';
 
 //initial data
 const initialColumns= [

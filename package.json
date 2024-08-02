@@ -1,6 +1,6 @@
 {
   "name": "@wazza99/use-sortable",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": "Leonard Ikeh",
   "main": "dist/index.js",
@@ -10,6 +10,11 @@
     "dist",
     "src"
   ],
+  "homepage": "https://github.com/leoikeh99/use-sortable#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leoikeh99/use-sortable"
+  },
   "scripts": {
     "analyze": "size-limit --why",
     "build": "dts build",
@@ -18,6 +23,10 @@
     "size": "size-limit",
     "start": "dts watch",
     "test": "dts test --passWithNoTests"
+  },
+  "keywords": ["react","hooks","drag-and-drop","sorting","sortable"],
+  "publishConfig": {
+    "access": "public"
   },
   "husky": {
     "hooks": {
