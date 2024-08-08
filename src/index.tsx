@@ -81,7 +81,6 @@ export const useSortable = <K extends string, T extends Column<K>>(
           asyncOperationsRef.current = asyncOperationsRef.current.filter(
             (id) => id !== operationId
           );
-          throw error;
         }
       }
       return;
@@ -127,7 +126,6 @@ export const useSortable = <K extends string, T extends Column<K>>(
           asyncOperationsRef.current = asyncOperationsRef.current.filter(
             (id) => id !== operationId
           );
-          throw error;
         }
       }
       return;
@@ -176,8 +174,6 @@ export const useSortable = <K extends string, T extends Column<K>>(
         asyncOperationsRef.current = asyncOperationsRef.current.filter(
           (id) => id !== operationId
         );
-
-        throw error;
       }
     }
   }
