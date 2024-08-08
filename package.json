@@ -1,6 +1,6 @@
 {
   "name": "@wazza99/use-sortable",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "author": "Leonard Ikeh",
   "main": "dist/index.js",
