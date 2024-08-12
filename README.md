@@ -103,6 +103,11 @@ Its important that no matter the DnD library you use, the result data you pass i
 ### With optimistic updates
 
 ```typescript
+import type {
+  OptimisticItemData,
+  OptimisticColumnData,
+} from '@wazza99/use-sortable';
+
 async function updateItem(values: OptimisticItemData) {
   //values contains the previous and current optimistc info of the dropped item, you can use this to update your backend
   const data = await createPromise(values, 3000);

@@ -17,13 +17,11 @@ const Board = () => {
   async function updateTask(values: OptimisticItemData) {
     //values contain the current and old state of the optimistic data
     const data = await createPromise(values, 3000); //do something after promise is completed
-    console.log(data);
   }
 
   async function updateColumn(values: OptimisticColumnData) {
     //values contain the current and old state of the optimistic data
     const data = await createPromise(values, 3000); //do something after promise is completed
-    console.log(data);
   }
 
   const handleDrag = (result: DropResult) => {
