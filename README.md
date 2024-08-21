@@ -109,11 +109,12 @@ import type {
 } from '@wazza99/use-sortable';
 
 async function updateItem(values: OptimisticItemData) {
-  //values contains the previous and current optimistc info of the dropped item, you can use this to update your backend
+  //values contains the previous and current optimistc info of the dropped item, and also the operation type, you can use this to update your backend
   const data = await createPromise(values, 3000);
 }
 
 async function updateColumn(values: OptimisticColumnData) {
+  //values contains the previous and current optimistc info of the dropped column, and also the operation type, you can use this to update your backend
   const data = await createPromise(values, 3000);
 }
 
@@ -137,6 +138,7 @@ fns.updateColumnItem('task1', { title: 'New title' });
 fns.createColumn({ id: 'column2', name: 'Doing', tasks: [] });
 fns.updateColumn('column2', { name: 'New name' });
 fns.removeColumn('column2');
+fns.changeItemColumn('task1', 'column2');
 ```
 
 ## API
@@ -166,6 +168,7 @@ fns.removeColumn('column2');
 | `createColumn`     | Creates a new column.                       | `function` |
 | `updateColumn`     | Updates a column.                           | `function` |
 | `removeColumn`     | Removes a column.                           | `function` |
+| `changeItemColumn` | Changes the column of an item.              | `function` |
 
 ## Important Notes
 
