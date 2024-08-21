@@ -56,7 +56,6 @@ const Board = () => {
           )}
         </Droppable>
       </DragDropContext>
-
       <Tabs defaultValue="tasks" className="container mx-auto mb-5">
         <TabsList className="grid max-w-[30rem] grid-cols-2 mx-auto ">
           <TabsTrigger value="tasks">Tasks</TabsTrigger>
