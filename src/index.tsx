@@ -64,6 +64,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
               order: source.index + 1,
               index: source.index,
             },
+            operation: 'COLUMN_REORDER',
           });
 
           const newColumns = moveColumns(columnsRef.current, result);
@@ -110,6 +111,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
               index: source.index,
               columnId: source.droppableId,
             },
+            operation: 'ITEM_REORDER',
           });
 
           const newColumns = moveItems(columnsRef.current, key, result);
@@ -156,6 +158,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
             index: source.index,
             columnId: source.droppableId,
           },
+          operation: 'ITEM_TO_COLUMN_REORDER',
         });
 
         const newColumns = moveItemToColumn(columnsRef.current, key, result);
@@ -239,7 +242,11 @@ export const useSortable = <K extends string, T extends Column<K>>(
     const item = column[key].find((i) => i.id === itemId);
     if (!item) throw new Error('Item not found');
 
-    const newItem = { ...item, ...update };
+    const sanitizedUpdate = Object.fromEntries(
+      Object.entries(update).filter(([key]) => key !== 'id' && key !== 'order')
+    ) as Omit<Partial<T[K][0]>, 'id' | 'order'>;
+
+    const newItem = { ...item, ...sanitizedUpdate };
     const newColumnTasks = column[key].map((i) =>
       i.id === itemId ? newItem : i
     );
@@ -257,9 +264,13 @@ export const useSortable = <K extends string, T extends Column<K>>(
     const column = columnsRef.current.find((c) => c.id === columnId);
     if (!column) throw new Error('Column not found');
 
+    const sanitizedUpdate = Object.fromEntries(
+      Object.entries(update).filter(([key]) => key !== 'id' && key !== 'order')
+    ) as Omit<Partial<T>, 'id' | 'order'>;
+
     let newColumn = {
       ...column,
-      ...update,
+      ...sanitizedUpdate,
     };
     const columns = columnsRef.current.map((c) =>
       c.id === columnId ? newColumn : c
@@ -309,6 +320,44 @@ export const useSortable = <K extends string, T extends Column<K>>(
     columnsRef.current = newColumns;
   }
 
+  function changeItemColumn(
+    itemId: string,
+    newColumnId: string,
+    order?: number
+  ) {
+    const column = columnsRef.current.find((c) =>
+      c[key].some((i) => i.id === itemId)
+    );
+    if (!column) throw new Error('Item Invalid');
+
+    const newColumn = columnsRef.current.find((c) => c.id === newColumnId);
+    if (!newColumn) throw new Error('New column Invalid');
+
+    if (newColumn.id === column.id) return;
+
+    const source = {
+      droppableId: column.id,
+      index: column[key].findIndex((i) => i.id === itemId),
+    };
+
+    const destination = {
+      droppableId: newColumn.id,
+      index:
+        order && order <= newColumn[key].length
+          ? order - 1
+          : newColumn[key].length,
+    };
+
+    const newColumns = moveItemToColumn(columnsRef.current, key, {
+      source,
+      destination,
+      draggableId: itemId,
+    });
+
+    setOptimisticColumns(newColumns);
+    columnsRef.current = newColumns;
+  }
+
   return {
     columns: optimisticColumns,
     dragEndHandler,
@@ -319,6 +368,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
       createColumn,
       updateColumn,
       removeColumn,
+      changeItemColumn,
     },
   };
 };
