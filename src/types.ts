@@ -26,16 +26,23 @@ export type ColumnState = {
   order: number;
 };
 
+export type Operation =
+  | 'ITEM_REORDER'
+  | 'COLUMN_REORDER'
+  | 'ITEM_TO_COLUMN_REORDER';
+
 export type OptimisticItemData = {
   itemId: string;
   oldState: ItemState;
   newState: ItemState;
+  operation: Operation;
 };
 
 export type OptimisticColumnData = {
   columnId: string;
   oldState: ColumnState;
   newState: ColumnState;
+  operation: Operation;
 };
 
 export type UpdateItem = (value: OptimisticItemData) => Promise<void>;
