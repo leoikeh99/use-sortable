@@ -265,7 +265,9 @@ export const useSortable = <K extends string, T extends Column<K>>(
     if (!column) throw new Error('Column not found');
 
     const sanitizedUpdate = Object.fromEntries(
-      Object.entries(update).filter(([key]) => key !== 'id' && key !== 'order')
+      Object.entries(update).filter(
+        ([_key]) => _key !== 'id' && _key !== 'order' && _key !== key
+      )
     ) as Omit<Partial<T>, 'id' | 'order'>;
 
     let newColumn = {
@@ -358,6 +360,11 @@ export const useSortable = <K extends string, T extends Column<K>>(
     columnsRef.current = newColumns;
   }
 
+  function refreshColumns(columns: T[]) {
+    setOptimisticColumns(columns);
+    columnsRef.current = columns;
+  }
+
   return {
     columns: optimisticColumns,
     dragEndHandler,
@@ -369,6 +376,7 @@ export const useSortable = <K extends string, T extends Column<K>>(
       updateColumn,
       removeColumn,
       changeItemColumn,
+      refreshColumns,
     },
   };
 };
